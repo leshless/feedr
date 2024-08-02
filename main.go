@@ -11,9 +11,9 @@ import (
 func main() {
 	app := &cli.App{
 		Name:  "feedr",
-		Usage: "Get the latest news in one app!",
+		Usage: "Get the latest news!",
 		Action: func(*cli.Context) error {
-			fmt.Println("Hello friend!")
+			fmt.Println("Here is your feed!")
 			return nil
 		},
 	}
