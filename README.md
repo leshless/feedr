@@ -1,12 +1,12 @@
 # Feedr
 
-## Get all the news in one app!
+## 🌐Get all the news in one app!
 ### Feedr is a compact CLI app written on Go
-- Grab the latest updates from the news channels straight into your linux terminal
-- Manage your feed by setting up the list of allowed RSS hosts
-- Setup the Feedr config to always stay tuned
+#### - Grab the latest updates from the news channels straight into your linux terminal
+#### - Manage your feed by setting up the list of allowed RSS hosts
+#### - Setup the Feedr config to always stay tuned
 
-## Installation (Linux)
+## ⚙️Installation (Linux)
 ### 1. Clone this repo:
 ```bash
 git clone https://github.com/leshless/feedr.git
