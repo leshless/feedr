@@ -3,7 +3,7 @@
 ## 🌐Get all the news in one app!
 ### Feedr is a compact RSS reader CLI app written on Go
  - **Grab the latest updates from the news channels straight into your linux terminal**
- - **Manage your feed by setting up the list of allowed RSS hosts**
+ - **Manage your feed by editing the list of allowed RSS hosts**
  - **Setup the Feedr config to always stay tuned**
 
 ## ⚙️Installation (Linux)
