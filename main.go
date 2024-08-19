@@ -19,6 +19,9 @@ type Config struct {
 	Dummy bool
 }
 
+var config Config
+var sources []Source
+
 // Results of the single call to RSS feed. Err may be a net error or a parsing error.
 type ParseResult struct {
 	Name string
@@ -29,13 +32,7 @@ type ParseResult struct {
 // HandlerWrapper is a middleware that performs auxilary actions before and after calling a Hanlder.
 func Wrapper(handler cli.ActionFunc) cli.ActionFunc {
 	return func(cctx *cli.Context) error {
-		err := OpenConfigFiles()
-		defer CloseConfigFiles()
-		if err != nil {
-			return err
-		}
-
-		err = handler(cctx)
+		err := handler(cctx)
 		return err
 	}
 }
@@ -45,14 +42,14 @@ func main() {
 		Name:  "feedr",
 		Usage: "Get the latest news!",
 		Action: Wrapper(func(ctx *cli.Context) error {
-			sources, err := ReadSources()
+			err := ReadConfigFile(SOURCES_PATH, &sources)
 			if err != nil {
 				return err
 			}
 
-			sources = append(sources, Source{"jopa", "jopa.com"})
+			sources = append(sources, Source{"coca", "cola"})
 
-			err = WriteSources(sources)
+			err = WriteConfigFile(SOURCES_PATH, sources)
 			if err != nil {
 				return err
 			}

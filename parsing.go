@@ -18,7 +18,7 @@ const (
 	XML_FORMAT_ERROR  = "incorrect XML format"
 )
 
-// Self-explanatory. Name is the user alias of the source.
+// Self-explanatory. "Name" field is the user alias of the source.
 type FeedError struct {
 	What string
 	Name string
