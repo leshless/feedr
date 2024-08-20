@@ -56,12 +56,26 @@ func MainHandler(cctx *cli.Context) error {
 }
 
 func ListHandler(cctx *cli.Context) error {
-	results := FetchAndParse(sources)
-	for _, res := range results {
-		if res.Err == nil {
-			fmt.Printf("%v:%v\n", res.Name, res.Feed)
+	if cctx.Bool("add") {
+		args := cctx.Args()
+		if args.Len() != 2 {
+			return fmt.Errorf("bad args")
+		}
+
+		name := args.Get(0)
+		url := args.Get(1)
+		sources = append(sources, Source{name, url})
+
+		err := WriteConfigFile(SOURCES_PATH, sources)
+		if err != nil {
+			return err
+		}
+	} else {
+		for _, source := range sources {
+			fmt.Printf("%s (url: %s)\n", source.Name, source.Url)
 		}
 	}
+
 	return nil
 }
 
@@ -70,13 +84,15 @@ func main() {
 		Name:   "feedr",
 		Usage:  "Get the latest news.",
 		Action: Wrapper(MainHandler),
+
 		Commands: []*cli.Command{
 			{
 				Name:   "list",
 				Usage:  "Manage the list of your feeds.",
 				Action: Wrapper(ListHandler),
+
 				Flags: []cli.Flag{
-					&cli.StringSliceFlag{
+					&cli.BoolFlag{
 						Name:    "add",
 						Aliases: []string{"a"},
 						Usage:   "Adds feed to a list.",
