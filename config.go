@@ -17,7 +17,7 @@ const (
 	HOME_DIR_ERROR          = "could not retrieve home directory"
 	READ_ERROR              = "could not read config file"
 	WRITE_ERROR             = "could not write to config file"
-	YAML_FORMAT_ERROR       = "could not parse yaml data"
+	YAML_FORMAT_ERROR       = "could not parse YAML data"
 	UNKNOWN_ERROR           = "unknown"
 )
 

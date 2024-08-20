@@ -32,30 +32,58 @@ type ParseResult struct {
 // HandlerWrapper is a middleware that performs auxilary actions before and after calling a Hanlder.
 func Wrapper(handler cli.ActionFunc) cli.ActionFunc {
 	return func(cctx *cli.Context) error {
-		err := handler(cctx)
+		err := ReadConfigFile(CONFIG_PATH, &config)
+		if err != nil {
+			return err
+		}
+		err = ReadConfigFile(SOURCES_PATH, &sources)
+		if err != nil {
+			return err
+		}
+		err = handler(cctx)
 		return err
 	}
 }
 
+func MainHandler(cctx *cli.Context) error {
+	results := FetchAndParse(sources)
+	for _, res := range results {
+		if res.Err == nil {
+			fmt.Printf("%v:%v\n", res.Name, res.Feed)
+		}
+	}
+	return nil
+}
+
+func ListHandler(cctx *cli.Context) error {
+	results := FetchAndParse(sources)
+	for _, res := range results {
+		if res.Err == nil {
+			fmt.Printf("%v:%v\n", res.Name, res.Feed)
+		}
+	}
+	return nil
+}
+
 func main() {
 	app := &cli.App{
-		Name:  "feedr",
-		Usage: "Get the latest news!",
-		Action: Wrapper(func(ctx *cli.Context) error {
-			err := ReadConfigFile(SOURCES_PATH, &sources)
-			if err != nil {
-				return err
-			}
-
-			sources = append(sources, Source{"coca", "cola"})
-
-			err = WriteConfigFile(SOURCES_PATH, sources)
-			if err != nil {
-				return err
-			}
-
-			return nil
-		}),
+		Name:   "feedr",
+		Usage:  "Get the latest news.",
+		Action: Wrapper(MainHandler),
+		Commands: []*cli.Command{
+			{
+				Name:   "list",
+				Usage:  "Manage the list of your feeds.",
+				Action: Wrapper(ListHandler),
+				Flags: []cli.Flag{
+					&cli.StringSliceFlag{
+						Name:    "add",
+						Aliases: []string{"a"},
+						Usage:   "Adds feed to a list.",
+					},
+				},
+			},
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {

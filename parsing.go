@@ -15,7 +15,7 @@ const (
 
 	UNREACHABLE_ERROR = "couldn't reach"
 	TIME_LIMIT_ERROR  = "time to fetch exceeded"
-	XML_FORMAT_ERROR  = "incorrect XML format"
+	XML_FORMAT_ERROR  = "could not parse XML data"
 )
 
 // Self-explanatory. "Name" field is the user alias of the source.
