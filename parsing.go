@@ -13,7 +13,7 @@ const (
 	FETCH_WORKERS_AMOUNT = 10
 	FETCH_TIME_LIMIT     = 5 * time.Second
 
-	UNREACHABLE_ERROR = "couldn't reach"
+	UNREACHABLE_ERROR = "couldn't reach feed"
 	TIME_LIMIT_ERROR  = "time to fetch exceeded"
 	XML_FORMAT_ERROR  = "could not parse XML data"
 )
@@ -62,8 +62,11 @@ func FetchAndParse(sources []Source) []ParseResult {
 
 			default:
 				feed, err := fp.ParseURLWithContext(source.Url, ctx)
-				// if err != nil {}
-				resultChannel <- ParseResult{source.Name, feed, err}
+				if err != nil {
+					resultChannel <- ParseResult{source.Name, nil, FeedErrorNew(UNREACHABLE_ERROR, source.Name)}
+				} else {
+					resultChannel <- ParseResult{source.Name, feed, err}
+				}
 			}
 		}
 	}

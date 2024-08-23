@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/mmcdole/gofeed"
 	"github.com/urfave/cli/v2"
@@ -47,11 +48,20 @@ func Wrapper(handler cli.ActionFunc) cli.ActionFunc {
 
 func MainHandler(cctx *cli.Context) error {
 	results := FetchAndParse(sources)
+
+	var items strings.Builder
+	var errors strings.Builder
+
 	for _, res := range results {
-		if res.Err == nil {
-			fmt.Printf("%v:%v\n", res.Name, res.Feed)
+		if res.Err != nil {
+			errors.WriteString(fmt.Sprintf("%s\n", res.Err.Error()))
+		} else {
+			for _, item := range res.Feed.Items {
+
+			}
 		}
 	}
+
 	return nil
 }
 
